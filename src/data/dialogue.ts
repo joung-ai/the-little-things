@@ -18,7 +18,7 @@ export interface DialogueLine {
 
 export const DIALOGUE: Record<string, DialogueLine[]> = {
   lrtIntro: [
-    { speaker: 'narration', text: 'One afternoon on the LRT. I was standing by the doors in my National University uniform.' },
+    { speaker: 'narration', text: 'One afternoon on the LRT. I was standing by the doors naka NU uniform.' },
   ],
   lrtNotice: [
     { speaker: 'narration', text: 'And someone kept looking at the little Tamtam on my ID Lace. (sino shea, joke)' },
@@ -37,7 +37,7 @@ export const DIALOGUE: Record<string, DialogueLine[]> = {
   ],
   esplanadeArrive: [
     { speaker: 'narration', text: 'At the Pasig River Esplanade, around 8:00 in the evening.' },
-    { speaker: 'narration', text: 'Get some tteokbokki from the stalls, and don’t forget the sunflower you brought.' },
+    { speaker: 'narration', text: 'Get some tteokbokki from the stalls' },
   ],
   tteokBuy: [
     { speaker: 'narration', text: 'Two cups of tteokbokki.' },
@@ -47,13 +47,13 @@ export const DIALOGUE: Record<string, DialogueLine[]> = {
     { speaker: 'narration', text: 'The lights on the water, the crowd behind us, the steam from the cups.' },
   ],
   sunflower: [
-    { speaker: 'narration', text: 'Suddenly, I went out and brought a little bouquet: one sunflower, wrapped in purple.', cue: 'give' },
+    { speaker: 'narration', text: 'Suddenly, I went out and brought water and secretly bought you one sunflower, wrapped in purple. hehehe', cue: 'give' },
   ],
   bench: [
     { speaker: 'narration', text: 'The market keeps humming behind us. For a moment it’s just the two of us and the river.' },
   ],
   letterNotice: [
-    { speaker: 'narration', text: 'Wait… ano yun, drifting in over the water? mwehehe' },
+    { speaker: 'narration', text: 'Wait… ano yun, may lumilipad mwehehe' },
   ],
   pets: [
     { speaker: 'zed', text: 'Hi pi! pinapatanong kasi ng lalaking yan' },
