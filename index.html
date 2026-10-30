@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <title>The Little Things</title>
+    <meta name="description" content="A small low-poly 3D story: an LRT ride, a night at the Pasig River Esplanade, and one important question." />
+    <meta name="theme-color" content="#0b1430" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gaegu:wght@400;700&family=Nunito:wght@400;600;700&display=swap" />
+  </head>
+  <body>
+    <!--APP-->
+    <canvas id="game" aria-label="The Little Things game view"></canvas>
+
+    <div id="ui">
+      <div id="loading" class="screen">
+        <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p id="loading-text">Lighting up the night market…</p>
+        <p id="error-text" hidden></p>
+      </div>
+
+      <div id="title" class="screen" hidden>
+        <div class="ticket">
+          <div class="ticket-main">
+            <p class="eyebrow">A little game, made for you</p>
+            <h1>The Little Things<span class="script">our story</span></h1>
+            <dl class="route">
+              <div><dt>From</dt><dd>LRT, one afternoon</dd></div>
+              <div><dt>To</dt><dd>Pasig River Esplanade</dd></div>
+              <div><dt>Around</dt><dd>7:00 PM</dd></div>
+            </dl>
+          </div>
+          <div class="ticket-stub">
+            <button id="btn-continue" class="btn primary" hidden>Continue</button>
+            <button id="btn-start" class="btn primary">Begin</button>
+            <button id="btn-garden" class="btn ghost" hidden>Memory Garden</button>
+            <p class="hint">Sound on · Phones: turn sideways</p>
+          </div>
+        </div>
+        <p id="placeholder-note" class="placeholder-note" hidden>Draft letter and placeholder looks are still in use. Edit <code>src/data/letter.ts</code> and <code>src/data/settings.ts</code> before sharing.</p>
+      </div>
+
+      <div id="hud" hidden>
+        <div id="objective" class="objective" hidden><span class="obj-dot" aria-hidden="true"></span><span id="objective-text"></span></div>
+        <div class="hud-buttons">
+          <button id="btn-journal" class="icon-btn" aria-label="Memory journal (J)" title="Memory journal (J)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5v-15Z" /><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3" /><path d="M12 7.6c-.9-1-2.7-.8-2.9.7-.2 1.2 1.3 2.3 2.9 3.4 1.6-1.1 3.1-2.2 2.9-3.4-.2-1.5-2-1.7-2.9-.7Z" /></svg>
+          </button>
+          <button id="btn-menu" class="icon-btn" aria-label="Menu (Esc)" title="Menu (Esc)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14" /></svg>
+          </button>
+        </div>
+        <button id="prompt" class="prompt" hidden><kbd>E</kbd><span id="prompt-text"></span></button>
+        <div id="joystick" aria-hidden="true"><div id="joy-knob"></div></div>
+        <button id="btn-action" class="action" hidden aria-label="Interact"><span id="action-label"></span></button>
+      </div>
+
+      <div id="bubbles"></div>
+      <div id="tap-catcher" hidden></div>
+
+      <div id="dialogue" hidden role="dialog" aria-live="polite">
+        <p id="dlg-speaker" class="speaker"></p>
+        <p id="dlg-text"></p>
+        <span class="dlg-next" aria-hidden="true">▾</span>
+      </div>
+
+      <div id="chapter" hidden>
+        <p id="chapter-eyebrow" class="eyebrow"></p>
+        <h2 id="chapter-title"></h2>
+      </div>
+
+      <div id="toast" hidden role="status">
+        <span class="toast-icon" aria-hidden="true">✦</span>
+        <div>
+          <p class="eyebrow">Memory unlocked</p>
+          <p id="toast-title"></p>
+        </div>
+      </div>
+
+      <div id="phone" class="overlay phone-overlay" hidden>
+        <div class="phone-frame" role="dialog" aria-label="Zena’s phone">
+          <div class="phone-notch" aria-hidden="true"></div>
+          <div class="phone-screen">
+            <p class="phone-app">‹ Notes</p>
+            <p id="phone-text"></p>
+          </div>
+        </div>
+        <p id="phone-hint" class="phone-hint"></p>
+        <button id="btn-phone-done" class="btn primary">Continue</button>
+      </div>
+
+      <div id="letter" class="overlay" hidden>
+        <article class="paper">
+          <div id="letter-body"></div>
+          <button id="btn-letter-done" class="btn primary">I’ve finished reading</button>
+        </article>
+      </div>
+
+      <div id="proposal" class="overlay" hidden>
+        <div class="proposal-card">
+          <h2 id="proposal-q"></h2>
+          <div class="row">
+            <button id="btn-yes" class="btn primary big"></button>
+            <button id="btn-talk" class="btn big"></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="ending" class="overlay" hidden>
+        <div class="ending-card">
+          <p id="ending-mark"></p>
+          <p id="ending-text"></p>
+          <div class="row" id="ending-buttons"></div>
+        </div>
+      </div>
+
+      <div id="journal" class="overlay panel-overlay" hidden>
+        <section class="panel" aria-label="Memory journal">
+          <header>
+            <div>
+              <h2>Memory Journal</h2>
+              <p id="journal-count" class="muted"></p>
+            </div>
+            <button class="icon-btn" data-close aria-label="Close journal">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+            </button>
+          </header>
+          <ol id="journal-list"></ol>
+        </section>
+      </div>
+
+      <div id="menu" class="overlay panel-overlay" hidden>
+        <section class="panel" aria-label="Menu">
+          <header>
+            <h2>Paused</h2>
+            <button class="icon-btn" data-close aria-label="Close menu">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+            </button>
+          </header>
+          <div class="settings">
+            <label class="toggle"><input type="checkbox" id="set-sound" /><span>Sound</span></label>
+            <label class="slider"><span>Music</span><input type="range" id="set-music" min="0" max="100" /></label>
+            <label class="slider"><span>Ambience</span><input type="range" id="set-ambience" min="0" max="100" /></label>
+            <label class="slider"><span>Effects</span><input type="range" id="set-sfx" min="0" max="100" /></label>
+            <label class="toggle"><input type="checkbox" id="set-motion" /><span>Reduce motion</span></label>
+            <label class="toggle"><input type="checkbox" id="set-low" /><span>Battery saver (fewer effects)</span></label>
+            <label class="toggle"><input type="checkbox" id="set-remember" /><span>Remember my answer on this device</span></label>
+          </div>
+          <div class="menu-buttons">
+            <button id="btn-resume" class="btn primary">Resume</button>
+            <button id="btn-menu-garden" class="btn" hidden>Memory Garden</button>
+            <button id="btn-restart" class="btn">Restart story</button>
+            <button id="btn-title" class="btn ghost">Title screen</button>
+          </div>
+          <p class="muted small">Controls · Move: WASD / arrows or the left stick · Look: drag · Interact: E or the round button · Journal: J</p>
+        </section>
+      </div>
+
+      <div id="memory-card" class="overlay" hidden>
+        <div class="memory-card">
+          <p id="mc-chapter" class="eyebrow"></p>
+          <h2 id="mc-title"></h2>
+          <p id="mc-desc"></p>
+          <button id="mc-close" class="btn primary">Close</button>
+        </div>
+      </div>
+
+      <div id="rotate-hint" hidden>
+        <span>Turn your phone sideways for the best view</span>
+        <button id="rotate-close" class="icon-btn small" aria-label="Dismiss">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+        </button>
+      </div>
+
+      <div id="fade"></div>
+      <div id="dev" hidden></div>
+    </div>
+    <!--/APP-->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
